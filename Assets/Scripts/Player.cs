@@ -9,6 +9,8 @@ public class Player : MonoBehaviour {
     public GameObject startGameCanvas;
     public GameObject gameCanvas;
     public GameObject endGameCanvas;
+    public ParticleSystem explosion;
+    public ParticleSystem coinExplosion;
 
     private float speed = 0;
     private float turningSpeed = 140;
@@ -52,6 +54,9 @@ public class Player : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         switch(other.tag) {
             case "Coin":
+                coinExplosion.transform.position = other.transform.position;
+                coinExplosion.Play();
+
                 Destroy(other.gameObject);
 
                 nCoins++;
@@ -70,10 +75,13 @@ public class Player : MonoBehaviour {
 
                 break;
             case "Obstacle":
-                Destroy(this.gameObject);
+                explosion.transform.position = transform.position;
+                explosion.Play();
 
                 gameCanvas.SetActive(false);
                 endGameCanvas.SetActive(true);
+                
+                Destroy(this.gameObject);
 
                 break;
         }
